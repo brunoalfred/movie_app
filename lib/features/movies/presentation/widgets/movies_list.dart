@@ -9,6 +9,7 @@ class MoviesList extends StatefulWidget {
   const MoviesList({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _MoviesListState createState() => _MoviesListState();
 }
 
