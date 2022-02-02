@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:movie_app/app/constants/constants.dart';
 import 'package:movie_app/features/movies/data/models/movie.dart';
 import 'package:movie_app/features/movies/presentation/presentation.dart';
-import 'package:http/http.dart' as http;
 
 class MoviesDetailsScreen extends StatelessWidget {
   const MoviesDetailsScreen({Key? key, required this.movie}) : super(key: key);
@@ -50,9 +50,10 @@ class MoviesDetailsScreen extends StatelessWidget {
                       child: Text(
                         'Movie Info',
                         style: TextStyle(
-                            fontSize: 20,
-                            color: kTextColor,
-                            fontWeight: FontWeight.bold),
+                          fontSize: 20,
+                          color: kTextColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Text(
@@ -66,7 +67,7 @@ class MoviesDetailsScreen extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20,
                             color: kTextColor,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,),
                       ),
                     ),
                     SizedBox(
@@ -80,7 +81,6 @@ class MoviesDetailsScreen extends StatelessWidget {
                                 child: CircularProgressIndicator(),
                               );
                             case MoviesSuggestionStatus.success:
-                              print('sucess');
                               return ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
@@ -88,7 +88,8 @@ class MoviesDetailsScreen extends StatelessWidget {
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
+                                      horizontal: 8,
+                                    ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(

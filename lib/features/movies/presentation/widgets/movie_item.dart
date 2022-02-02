@@ -19,7 +19,6 @@ class MovieItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 1,
               child: GestureDetector(
                 onTap: () {
                   MoviesSuggestionsCubit(
@@ -66,7 +65,7 @@ class MovieItem extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Text(
                         movie.genre?.join(', ') ?? '',
                         style: const TextStyle(

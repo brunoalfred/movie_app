@@ -91,22 +91,23 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 }
 
 class MoviesSuggestionsCubit extends Cubit<MoviesSuggestionsState> {
-  MoviesSuggestionsCubit(MoviesSuggestionsState initialState,
-      {required this.httpClient})
-      : super(initialState);
+  MoviesSuggestionsCubit(
+    MoviesSuggestionsState initialState, {
+    required this.httpClient,
+  }) : super(initialState);
 
   final http.Client httpClient;
 
   Future<void> onMovieSuggestionsFetched(Movie movie) async {
     if (state.status == MoviesSuggestionStatus.initial) {
       final movies = await _fetchSuggestedMovies(movie.id);
-      
+
       try {
         return emit(
           state.copyWith(
             status: MoviesSuggestionStatus.success,
             movies: movies,
-          ), 
+          ),
         );
       } catch (e) {
         debugPrint(e.toString());
@@ -139,7 +140,7 @@ class MoviesSuggestionsCubit extends Cubit<MoviesSuggestionsState> {
           );
         }).toList();
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     }
     throw Exception('error fetching movies');
