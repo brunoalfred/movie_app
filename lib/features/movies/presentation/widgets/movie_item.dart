@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:movie_app/app/constants/constants.dart';
@@ -21,15 +22,17 @@ class MovieItem extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  MoviesSuggestionsCubit(
-                    const MoviesSuggestionsState(),
-                    httpClient: http.Client(),
-                  ).onMovieSuggestionsFetched(movie);
                   Navigator.push<void>(
                     context,
                     MaterialPageRoute<dynamic>(
-                      builder: (context) => MoviesDetailsScreen(
-                        movie: movie,
+                      builder: (context) => BlocProvider.value(
+                        value: MoviesSuggestionsCubit(
+                          const MoviesSuggestionsState(),
+                          httpClient: http.Client(),
+                        ),
+                        child: MoviesDetailsScreen(
+                          movie: movie,
+                        ),
                       ),
                     ),
                   );

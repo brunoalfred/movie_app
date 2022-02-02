@@ -56,7 +56,7 @@ class MoviesSuggestionsState extends Equatable {
     List<Movie>? movies,
   }) {
     return MoviesSuggestionsState(
-      status: this.status,
+      status: status ?? this.status,
       movies: movies,
     );
   }
@@ -66,7 +66,7 @@ class MoviesSuggestionsState extends Equatable {
 
   @override
   String toString() {
-    return '''MoviesState { status: $status,  posts: $movies }''';
+    return '''MoviesState { status: $status,  movies: $movies }''';
   }
 
   @override

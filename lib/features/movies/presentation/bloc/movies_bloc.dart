@@ -112,7 +112,7 @@ class MoviesSuggestionsCubit extends Cubit<MoviesSuggestionsState> {
   Future<void> onMovieSuggestionsFetched(Movie movie) async {
     if (state.status == MoviesSuggestionStatus.initial) {
       final movies = await _fetchSuggestedMovies(movie.id);
-
+    
       try {
         return emit(
           state.copyWith(

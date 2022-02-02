@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/app/constants/constants.dart';
 
 import 'package:movie_app/features/movies/presentation/presentation.dart';
 import 'package:movie_app/features/movies/presentation/widgets/bottom_loader.dart';
@@ -29,13 +30,31 @@ class _MoviesListState extends State<MoviesList> {
             builder: (context, state) {
               switch (state.status) {
                 case MoviesStatus.failure:
-                  return const Center(
-                    child: Text(
-                      'Failed to fetch movies',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                  return Center(
+                    child: TextButton(
+                      onPressed: () {
+                        context.read<MoviesBloc>().add(
+                              const MoviesFetched(),
+                            );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          kAssetPrimaryColor,
+                        ),
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        'Oops!, Tap to retry',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   );
@@ -49,12 +68,11 @@ class _MoviesListState extends State<MoviesList> {
                         : state.movies.length + 1,
                     controller: _scrollController,
                     itemBuilder: (context, index) {
-                      print( state.movies.length);
                       return index >= state.movies.length
                           ? const BottomLoader()
                           : MovieItem(
                               movie: state.movies[index],
-                            ); 
+                            );
                     },
                   );
                 case MoviesStatus.initial:
