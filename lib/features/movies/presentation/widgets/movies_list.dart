@@ -49,11 +49,12 @@ class _MoviesListState extends State<MoviesList> {
                         : state.movies.length + 1,
                     controller: _scrollController,
                     itemBuilder: (context, index) {
+                      print( state.movies.length);
                       return index >= state.movies.length
                           ? const BottomLoader()
                           : MovieItem(
                               movie: state.movies[index],
-                            );
+                            ); 
                     },
                   );
                 case MoviesStatus.initial:

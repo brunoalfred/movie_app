@@ -2,21 +2,32 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/app/constants/constants.dart';
 import 'package:movie_app/features/movies/data/models/movie.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 part 'movies_event.dart';
 part 'movies_state.dart';
 
 const int _moviesLimit = 10;
+const throttleDuration = Duration(milliseconds: 100);
+
+
+EventTransformer<E> throttleDroppable<E>(Duration duration) {
+  return (events, mapper) {
+    return droppable<E>().call(events.throttle(duration), mapper);
+  };
+}
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   MoviesBloc({required this.httpClient}) : super(const MoviesState()) {
     on<MoviesFetched>(
       _onMoviesFetched,
+      transformer: throttleDroppable<MoviesFetched>(throttleDuration),
     );
   }
   final http.Client httpClient;
