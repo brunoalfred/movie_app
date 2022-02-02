@@ -109,8 +109,14 @@ class MovieItem extends StatelessWidget {
                           Navigator.push<void>(
                             context,
                             MaterialPageRoute<dynamic>(
-                              builder: (context) => MoviesDetailsScreen(
-                                movie: movie,
+                              builder: (context) => BlocProvider.value(
+                                value: MoviesSuggestionsCubit(
+                                  const MoviesSuggestionsState(),
+                                  httpClient: http.Client(),
+                                ),
+                                child: MoviesDetailsScreen(
+                                  movie: movie,
+                                ),
                               ),
                             ),
                           );
