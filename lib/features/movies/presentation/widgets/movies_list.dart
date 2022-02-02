@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:movie_app/features/movies/presentation/presentation.dart';
 import 'package:movie_app/features/movies/presentation/widgets/bottom_loader.dart';
-import 'package:movie_app/features/movies/presentation/widgets/movie_item.dart';
+
 
 class MoviesList extends StatefulWidget {
   const MoviesList({Key? key}) : super(key: key);
@@ -51,7 +51,7 @@ class _MoviesListState extends State<MoviesList> {
                   controller: _scrollController,
                   itemBuilder: (context, index) {
                     return index >= state.movies.length
-                        ? BottomLoader()
+                        ? const BottomLoader()
                         : MovieItem(
                             movie: state.movies[index],
                           );

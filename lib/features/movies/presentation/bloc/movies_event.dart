@@ -24,13 +24,3 @@ class MoviesFetchFailed extends MoviesEvent {
   @override
   List<Object> get props => [message];
 }
-
-class MovieDetailsFetched extends MoviesEvent {
-  const MovieDetailsFetched({required this.movie});
-  
-  final Movie movie;
-
-  @override
-  List<Object> get props => [movie];
-}
-

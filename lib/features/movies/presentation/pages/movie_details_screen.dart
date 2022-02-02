@@ -80,7 +80,7 @@ class MoviesDetailsScreen extends StatelessWidget {
                                 child: CircularProgressIndicator(),
                               );
                             case MoviesSuggestionStatus.success:
-                              
+                              print('sucess');
                               return ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,

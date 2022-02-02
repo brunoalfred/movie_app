@@ -12,7 +12,6 @@ class MovieItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(movie.genre);
     return ListTile(
       title: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -101,6 +100,10 @@ class MovieItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: TextButton(
                         onPressed: () {
+                          MoviesSuggestionsCubit(
+                            const MoviesSuggestionsState(),
+                            httpClient: http.Client(),
+                          ).onMovieSuggestionsFetched(movie);
                           Navigator.push<void>(
                             context,
                             MaterialPageRoute<dynamic>(

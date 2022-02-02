@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,7 +11,7 @@ import 'package:movie_app/features/movies/data/models/movie.dart';
 part 'movies_event.dart';
 part 'movies_state.dart';
 
-const _moviesLimit = 15;
+const int _moviesLimit = 10;
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   MoviesBloc({required this.httpClient}) : super(const MoviesState()) {
@@ -23,7 +22,9 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final http.Client httpClient;
 
   Future<void> _onMoviesFetched(
-      MoviesFetched event, Emitter<MoviesState> emit) async {
+    MoviesFetched event,
+    Emitter<MoviesState> emit,
+  ) async {
     if (state.hasReachedMax) return;
     try {
       if (state.status == MoviesStatus.initial) {
@@ -37,7 +38,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
           ),
         );
       }
-      final movies = await _fetchMovies(state.movies.length);
+
+      // determine the next page to fetch
+
+      final startPage = state.movies.length ~/ _moviesLimit;
+
+      final movies = await _fetchMovies(startPage);
+
       movies.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
@@ -52,10 +59,10 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     }
   }
 
-  Future<List<Movie>> _fetchMovies([int startIndex = 0]) async {
+  Future<List<Movie>> _fetchMovies([int startPage = 1]) async {
     final response = await httpClient.get(
       Uri.parse(
-        '$listMovies?limit=$_moviesLimit&page=$startIndex',
+        '$listMovies?limit=$_moviesLimit&page=$startPage',
       ),
     );
 
@@ -64,18 +71,19 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       try {
         return body.map((dynamic json) {
           return Movie(
-              id: json['id'] as int,
-              title: json['title_long'] as String,
-              rating: json['rating'] as num,
-              genre: json['genres'] as List<dynamic>,
-              language: json['language'] as String,
-              coverImageUrl: json['medium_cover_image'] as String,
-              backgroundImageOriginal:
-                  json['background_image_original'] as String,
-              summary: json['summary'] as String);
+            id: json['id'] as int,
+            title: json['title_long'] as String,
+            rating: json['rating'] as num,
+            genre: json['genres'] as List<dynamic>,
+            language: json['language'] as String,
+            coverImageUrl: json['medium_cover_image'] as String,
+            backgroundImageOriginal:
+                json['background_image_original'] as String,
+            summary: json['summary'] as String,
+          );
         }).toList();
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     }
     throw Exception('error fetching movies');
@@ -92,12 +100,13 @@ class MoviesSuggestionsCubit extends Cubit<MoviesSuggestionsState> {
   Future<void> onMovieSuggestionsFetched(Movie movie) async {
     if (state.status == MoviesSuggestionStatus.initial) {
       final movies = await _fetchSuggestedMovies(movie.id);
+      
       try {
         return emit(
           state.copyWith(
             status: MoviesSuggestionStatus.success,
             movies: movies,
-          ),
+          ), 
         );
       } catch (e) {
         debugPrint(e.toString());
@@ -118,15 +127,16 @@ class MoviesSuggestionsCubit extends Cubit<MoviesSuggestionsState> {
       try {
         return body.map((dynamic json) {
           return Movie(
-              id: json['id'] as int,
-              title: json['title_long'] as String,
-              rating: json['rating'] as num,
-              genre: json['genres'] as List<dynamic>?,
-              language: json['language'] as String,
-              coverImageUrl: json['medium_cover_image'] as String,
-              backgroundImageOriginal:
-                  json['background_image_original'] as String,
-              summary: json['summary'] as String);
+            id: json['id'] as int,
+            title: json['title_long'] as String,
+            rating: json['rating'] as num,
+            genre: json['genres'] as List<dynamic>?,
+            language: json['language'] as String,
+            coverImageUrl: json['medium_cover_image'] as String,
+            backgroundImageOriginal:
+                json['background_image_original'] as String,
+            summary: json['summary'] as String,
+          );
         }).toList();
       } catch (e) {
         print(e);
