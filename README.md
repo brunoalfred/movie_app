@@ -4,6 +4,8 @@
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![License: MIT][license_badge]][license_link]
 
+![Demo](./demo.gif)
+
 A sample app to interact with YTS API
 ## Features
 - Listing all the movies
