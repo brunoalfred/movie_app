@@ -5,6 +5,7 @@
 [![License: MIT][license_badge]][license_link]
 
 ![Demo](./demo.gif)
+<!-- <img src="./demo.gif" width="334" height="720">  -->
 
 A sample app to interact with YTS API
 ## Features
